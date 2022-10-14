@@ -1,9 +1,9 @@
 const moment = require('moment')
 
 module.exports = app => {
-    const getTasks = (req,res) => {
-        const date = req.query.date ? 
-                     req.query.date : moment().endOf('day').toDate()
+    const getTasks = (req, res) => {
+        const date = req.query.date ? req.query.date
+            : moment().endOf('day').toDate()
 
         app.db('tasks')
             .where({ user_id: req.user.id })
@@ -13,11 +13,11 @@ module.exports = app => {
             .catch(err => res.status(500).json(err))
     }
 
-    const save = (req,res) => {
+    const save = (req, res) => {
         if(!req.body.desc.trim()) {
             return res.status(400).send('Descrição é um campo obrigatório')
         }
-        
+
         req.body.user_id = req.user.id
 
         app.db('tasks')
@@ -59,7 +59,7 @@ module.exports = app => {
                     res.status(400).send(msg)
                 }
                 const done_at = task.done_at ? null : new Date()
-                updateTasksDoneAt(req,res, done_at)
+                updateTasksDoneAt(req, res, done_at)
             })
             .catch((err) => res.status(500).json(err))
     }
